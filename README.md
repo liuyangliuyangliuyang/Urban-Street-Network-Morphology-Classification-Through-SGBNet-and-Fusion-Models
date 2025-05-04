@@ -15,39 +15,48 @@ The code includes the following components:
 ## Directory Structure
 
 .
-├── dataset/ # Data loading and preprocessing
-│ ├── init.py
-│ ├── CombinedDataset.py # Combined dataset definition and handling
-│ ├── DataSource.py # Data source loading and handling
-│ ├── load_splits_from_h5py.py # Dataset split loading from HDF5 files
-│ ├── IndexedDataset.py # Dataset wrapper to return data with indices
-│ └── dataset_utils.py # Helper functions for dataset processing
-├── feature_processing/ # Feature processing and transformation
-│ ├── init.py
-│ ├── feature_extraction.py # Extracting features from datasets
-│ ├── feature_transform.py # Feature transformation (scaling, etc.)
-│ ├── feature_utils.py # Utility functions for feature handling
-│ └── transform_features.py # Transform node features (GNN) and global features
-├── models/ # Model definitions
-│ ├── init.py
-│ ├── cnn.py # CNN model components
-│ ├── gnn.py # GNN model components
-│ ├── fusion.py # Fusion of different model features
-│ └── dynamic_model.py # Dynamic model combining CNN, GNN, and global features
-├── trainer/ # Training and evaluation functions
-│ ├── init.py
-│ ├── train.py # Training loop function
-│ ├── evaluate.py # Evaluation function for validation and testing
-│ └── test.py # Testing loop and final evaluation
-├── utils/ # Utility functions
-│ ├── init.py
-│ ├── save_results.py # Saving results and logs (training costs, metrics)
-│ ├── metrics.py # Calculating performance metrics (F1, accuracy, etc.)
-│ ├── cost_utils.py # Helper functions for saving cost metrics (training time, model size)
-│ └── plot_utils.py # Utility functions for plotting and visualizations
-├── config/ # Configuration files
-│ └── config.py # Configuration for all models (CNN, GNN, etc.)
-└── main.py # Main entry point for running the training and evaluation pipeline
+# Project Directory Structure
+
+## dataset/ # Data loading and preprocessing
+- `init.py`
+- `CombinedDataset.py` # Combined dataset definition and handling
+- `DataSource.py` # Data source loading and handling
+- `load_splits_from_h5py.py` # Dataset split loading from HDF5 files
+- `IndexedDataset.py` # Dataset wrapper to return data with indices
+- `dataset_utils.py` # Helper functions for dataset processing
+
+## feature_processing/ # Feature processing and transformation
+- `init.py`
+- `feature_extraction.py` # Extracting features from datasets
+- `feature_transform.py` # Feature transformation (scaling, etc.)
+- `feature_utils.py` # Utility functions for feature handling
+- `transform_features.py` # Transform node features (GNN) and global features
+
+## models/ # Model definitions
+- `init.py`
+- `cnn.py` # CNN model components
+- `gnn.py` # GNN model components
+- `fusion.py` # Fusion of different model features
+- `dynamic_model.py` # Dynamic model combining CNN, GNN, and global features
+
+## trainer/ # Training and evaluation functions
+- `init.py`
+- `train.py` # Training loop function
+- `evaluate.py` # Evaluation function for validation and testing
+- `test.py` # Testing loop and final evaluation
+
+## utils/ # Utility functions
+- `init.py`
+- `save_results.py` # Saving results and logs (training costs, metrics)
+- `metrics.py` # Calculating performance metrics (F1, accuracy, etc.)
+- `cost_utils.py` # Helper functions for saving cost metrics (training time, model size)
+- `plot_utils.py` # Utility functions for plotting and visualizations
+
+## config/ # Configuration files
+- `config.py` # Configuration for all models (CNN, GNN, etc.)
+
+## main.py # Main entry point for running the training and evaluation pipeline
+
 
 
 
