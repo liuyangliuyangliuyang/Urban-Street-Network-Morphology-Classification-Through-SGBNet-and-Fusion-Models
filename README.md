@@ -66,7 +66,6 @@ The code includes the following components:
 
 To clone the repository, use the following command:
 
-```bash
 git clone https://github.com/yourusername/Urban-Street-Network-Morphology-Classification-Through-SGBNet-and-Fusion-Models.git
 
 ### Install dependencies
@@ -87,7 +86,7 @@ matplotlib
 numpy
 Usage
 
-Configuration
+### Configuration
 The configuration for the models is located in config/config.py. This file allows you to specify the models (CNN, GNN, etc.), their parameters, and how to combine them. Below is an example configuration:
 
 python
@@ -113,30 +112,31 @@ possible_models = {
     'label': {'type': 'label', 'columns': ['label0']},
     # Add other model configurations as needed
 }
-Dataset Loading
+
+### Dataset Loading
 The dataset/ directory contains the necessary functions to load and preprocess your data. You can load data like this:
 
 
 from dataset import DataSource
-
-# Load graph data from file
 data_source = DataSource(file_path='data/urban-street-network.h5', data_type='graph0', columns=['nx_list'])
 data = data_source.load_data(idx=0)
-Model Training and Evaluation
+
+### Model Training and Evaluation
 To start the training and evaluation process, run the main.py script:
 
 
 python main.py
 This script will automatically load the data, initialize the model, and begin the training process. You can adjust the configurations in config/config.py to modify the model or dataset.
 
-Feature Processing
+### Feature Processing
 The feature_processing/ directory includes all functions for extracting and transforming features. You can transform features as follows:
 
 
 from feature_processing import transform_node_features, transform_features
 
 train_dataset, val_dataset, test_dataset = transform_node_features(train_dataset, val_dataset, test_dataset)
-Model Definition
+
+### Model Definition
 The models (CNN, GNN, etc.) are located in the models/ directory. Below is an example of how to define and use a dynamic model:
 
 
