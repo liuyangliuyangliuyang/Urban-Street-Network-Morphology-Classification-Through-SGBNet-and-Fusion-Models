@@ -68,13 +68,14 @@ To clone the repository, use the following command:
 
 ```bash
 git clone https://github.com/yourusername/Urban-Street-Network-Morphology-Classification-Through-SGBNet-and-Fusion-Models.git
-Install dependencies
+
+### Install dependencies
 To install the necessary dependencies, run:
 
 pip install -r requirements.txt
 The requirements.txt file contains the required libraries for running the models:
 
-plaintext
+
 
 torch
 torchvision
@@ -85,6 +86,7 @@ networkx
 matplotlib
 numpy
 Usage
+
 Configuration
 The configuration for the models is located in config/config.py. This file allows you to specify the models (CNN, GNN, etc.), their parameters, and how to combine them. Below is an example configuration:
 
