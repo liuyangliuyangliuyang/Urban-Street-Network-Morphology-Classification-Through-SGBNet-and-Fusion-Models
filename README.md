@@ -68,28 +68,26 @@ To clone the repository, use the following command:
 
 git clone https://github.com/yourusername/Urban-Street-Network-Morphology-Classification-Through-SGBNet-and-Fusion-Models.git
 
-### Install dependencies
+# Install dependencies
 To install the necessary dependencies, run:
 
 pip install -r requirements.txt
+
 The requirements.txt file contains the required libraries for running the models:
 
+- torch
+- torchvision
+- torch-geometric
+- scikit-learn
+- h5py
+- networkx
+- matplotlib
+- numpy
 
-
-torch
-torchvision
-torch-geometric
-scikit-learn
-h5py
-networkx
-matplotlib
-numpy
-Usage
+## Usage
 
 ### Configuration
-The configuration for the models is located in config/config.py. This file allows you to specify the models (CNN, GNN, etc.), their parameters, and how to combine them. Below is an example configuration:
-
-python
+The configuration for the models is located in `config/config.py`. This file allows you to specify the models (CNN, GNN, etc.), their parameters, and how to combine them. Below is an example configuration:
 
 possible_models = {
     'cnn': {'type': 'image', 'columns': ['images'], 'features': 512},
@@ -114,123 +112,84 @@ possible_models = {
 }
 
 ### Dataset Loading
-The dataset/ directory contains the necessary functions to load and preprocess your data. You can load data like this:
-
+The `dataset/` directory contains the necessary functions to load and preprocess your data. You can load data like this:
 
 from dataset import DataSource
+
+# Load graph data from file
 data_source = DataSource(file_path='data/urban-street-network.h5', data_type='graph0', columns=['nx_list'])
 data = data_source.load_data(idx=0)
 
 ### Model Training and Evaluation
-To start the training and evaluation process, run the main.py script:
-
+To start the training and evaluation process, run the `main.py` script:
 
 python main.py
-This script will automatically load the data, initialize the model, and begin the training process. You can adjust the configurations in config/config.py to modify the model or dataset.
+
+This script will automatically load the data, initialize the model, and begin the training process. You can adjust the configurations in `config/config.py` to modify the model or dataset.
 
 ### Feature Processing
-The feature_processing/ directory includes all functions for extracting and transforming features. You can transform features as follows:
-
+The `feature_processing/` directory includes all functions for extracting and transforming features. You can transform features as follows:
 
 from feature_processing import transform_node_features, transform_features
 
 train_dataset, val_dataset, test_dataset = transform_node_features(train_dataset, val_dataset, test_dataset)
 
 ### Model Definition
-The models (CNN, GNN, etc.) are located in the models/ directory. Below is an example of how to define and use a dynamic model:
-
+The models (CNN, GNN, etc.) are located in the `models/` directory. Below is an example of how to define and use a dynamic model:
 
 from models import DynamicModel
 
 model = DynamicModel(config=possible_models, num_classes=6)
-Detailed Components
-Dataset (dataset/)
-DataSource.py: Handles loading data from various sources (images, graphs, labels).
 
-load_image(idx): Loads image data.
+## Detailed Components
 
-load_graph0(idx), load_graph1(idx): Loads graph data of type 0 and 1.
+### Dataset (`dataset/`)
+- `DataSource.py`: Handles loading data from various sources (images, graphs, labels).
+    - `load_image(idx)`: Loads image data.
+    - `load_graph0(idx), load_graph1(idx)`: Loads graph data of type 0 and 1.
+    - `load_labels(idx)`: Loads labels for each data sample.
+- `CombinedDataset.py`: Combines multiple data sources into a single dataset.
+    - `__getitem__(self, idx)`: Returns data from all sources at the specified index.
+    - `__len__(self)`: Returns the length of the dataset.
+- `load_splits_from_h5py.py`: Loads dataset splits (train, validation, test) from an HDF5 file.
+    - `load_splits_from_h5py(h5_file_path, key)`: Loads dataset splits from the specified key in the H5 file.
 
-load_labels(idx): Loads labels for each data sample.
+### Feature Processing (`feature_processing/`)
+- `feature_extraction.py`: Extracts features from the dataset.
+    - `extract_node_features(dataset)`: Extracts node features for GNNs.
+    - `extract_global_features(dataset)`: Extracts global features.
+- `feature_transform.py`: Transforms features (e.g., scaling, normalization).
+    - `transform_node_features(train_dataset, val_dataset, test_dataset)`: Transforms node features for GNNs.
+    - `transform_features(train_dataset, val_dataset, test_dataset)`: Transforms global features.
 
-CombinedDataset.py: Combines multiple data sources into a single dataset.
+### Models (`models/`)
+- `cnn.py`: Defines CNN-based models for image data.
+    - `ModifiedResNet34`: A modified ResNet34 model for image feature extraction.
+- `gnn.py`: Defines GNN models for graph-based data.
+    - `CustomGNN`: A custom GNN model with configurable layers and pooling mechanisms.
+- `fusion.py`: Defines a model that fuses features from different models.
+    - `FusionLayer`: Combines CNN and GNN outputs for final classification.
+- `dynamic_model.py`: A dynamic model that integrates CNN, GNN, and global models.
+    - `DynamicModel`: Main model that integrates CNN, GNN, and global models into a unified framework.
 
-__getitem__(self, idx): Returns data from all sources at the specified index.
+### Trainer (`trainer/`)
+- `train.py`: Implements the training loop.
+    - `train(model, train_loader, optimizers, criterion, device)`: Trains the model for one epoch.
+- `evaluate.py`: Implements the evaluation loop.
+    - `evaluate(model, loader, criterion, device)`: Evaluates the model on validation/test data.
+- `test.py`: Performs the final evaluation after training.
+    - `evaluate1(model, loader, criterion, device)`: Evaluates the model and saves results.
 
-__len__(self): Returns the length of the dataset.
+### Utils (`utils/`)
+- `save_results.py`: Handles saving results, such as training cost and performance metrics.
+    - `save_cost(training_time, model_parameters, split_seed, root_result_path)`: Saves training time and model parameters.
+- `metrics.py`: Calculates performance metrics such as F1 score, accuracy, precision, and recall.
+    - `calculate_metrics(y_pred, y_true)`: Calculates overall metrics like F1 score, accuracy, and confusion matrix.
+- `cost_utils.py`: Contains helper functions to save training cost and other metrics.
 
-load_splits_from_h5py.py: Loads dataset splits (train, validation, test) from an HDF5 file.
-
-load_splits_from_h5py(h5_file_path, key): Loads dataset splits from the specified key in the H5 file.
-
-Feature Processing (feature_processing/)
-feature_extraction.py: Extracts features from the dataset.
-
-extract_node_features(dataset): Extracts node features for GNNs.
-
-extract_global_features(dataset): Extracts global features.
-
-feature_transform.py: Transforms features (e.g., scaling, normalization).
-
-transform_node_features(train_dataset, val_dataset, test_dataset): Transforms node features for GNNs.
-
-transform_features(train_dataset, val_dataset, test_dataset): Transforms global features.
-
-Models (models/)
-cnn.py: Defines CNN-based models for image data.
-
-ModifiedResNet34: A modified ResNet34 model for image feature extraction.
-
-gnn.py: Defines GNN models for graph-based data.
-
-CustomGNN: A custom GNN model with configurable layers and pooling mechanisms.
-
-fusion.py: Defines a model that fuses features from different models.
-
-FusionLayer: Combines CNN and GNN outputs for final classification.
-
-dynamic_model.py: A dynamic model that integrates CNN, GNN, and global models.
-
-DynamicModel: Main model that integrates CNN, GNN, and global models into a unified framework.
-
-Trainer (trainer/)
-train.py: Implements the training loop.
-
-train(model, train_loader, optimizers, criterion, device): Trains the model for one epoch.
-
-evaluate.py: Implements the evaluation loop.
-
-evaluate(model, loader, criterion, device): Evaluates the model on validation/test data.
-
-test.py: Performs the final evaluation after training.
-
-evaluate1(model, loader, criterion, device): Evaluates the model and saves results.
-
-Utils (utils/)
-save_results.py: Handles saving results, such as training cost and performance metrics.
-
-save_cost(training_time, model_parameters, split_seed, root_result_path): Saves training time and model parameters.
-
-metrics.py: Calculates performance metrics such as F1 score, accuracy, precision, and recall.
-
-calculate_metrics(y_pred, y_true): Calculates overall metrics like F1 score, accuracy, and confusion matrix.
-
-cost_utils.py: Contains helper functions to save training cost and other metrics.
-
-Example Usage
-To run the training and evaluation pipeline, execute main.py:
-
+## Example Usage
+To run the training and evaluation pipeline, execute `main.py`:
 
 python main.py
-You can modify the configurations and models by editing the config/config.py file.
 
-
-
-This is the complete **README.md** in **Markdown** format, which includes the entire directory structure and all relevant details. You can copy this entire content and paste it into your GitHub repository without worrying about formatting issues.
-
-
-
-
-
-
-
+You can modify the configurations and models by editing the `config/config.py` file.
